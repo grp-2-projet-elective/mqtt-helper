@@ -85,7 +85,7 @@ export class EsbService {
                             packet.properties.responseTopic,
                             JSON.stringify(responseData)
                         );
-                        return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
+                        // return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                     }
                 case 'otherTopics':
                     console.log('other topics');
