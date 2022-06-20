@@ -13,7 +13,7 @@
     "test": "",
     "patch-version": "npm version patch",
     "prebuild": "npm run patch-version",
-    "build": "tsup src/index.ts --format js --clean --declaration",
+    "build": "tsup src/index.ts --format js --clean --dts",
     "prepublish-pkg": "npm run build",
     "publish-pkg": "npm publish"
   },
