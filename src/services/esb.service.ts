@@ -22,15 +22,25 @@ export class EsbService {
                 qos: 1,
             };
 
-            this.mqttClient.subscribe(['request/+/+', 'response/+/+'], opts, (err: Error) => {
+            this.mqttClient.subscribe('request/+/+', opts, (err: Error) => {
                 if (!err) {
-                    this.initEsbMessagesListening();
-                    console.log('ESB topics subscribed');
+                    console.log('ESB request topics subscribed');
                     return;
                 }
 
                 console.error(err);
             });
+
+            this.mqttClient.subscribe(['response/+/+'], (err: Error) => {
+                if (!err) {
+                    console.log('ESB response topics subscribed');
+                    return;
+                }
+
+                console.error(err);
+            });
+
+            this.initEsbMessagesListening();
         });
 
         this.mqttClient.on('error', (err: IErrorCallback) => {
@@ -86,7 +96,7 @@ export class EsbService {
         });
     }
 
-    public async startResponsePattern(
+    public async call(
         apiName: string,
         action: string,
         payload: string,
