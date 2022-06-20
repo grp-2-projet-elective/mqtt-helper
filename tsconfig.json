@@ -7,22 +7,23 @@
       "esnext"
     ],
     "moduleResolution": "node",
+    "outDir": "dist",
+    "declaration": true,
+    "importHelpers": true,
+    "inlineSources": false,
+    "noEmitHelpers": true,
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "sourceMap": false,
     "esModuleInterop": true,
-    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
     "strict": false,
     "strictNullChecks": true,
     "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "outDir": "./dist",
-    "declaration": true,
-    "importHelpers": true,
-    "inlineSources": false,
-    "noEmitHelpers": true,
-
     "strictPropertyInitialization": false,
-		"typeRoots": ["node_modules/@types/"],
     "paths": {
       "*": [
         "./src/*"
