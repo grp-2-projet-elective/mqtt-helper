@@ -1,6 +1,6 @@
 import { connect, IClientOptions, MqttClient } from "mqtt";
 
-export function initMqttClient(mqttClientOptions: IClientOptions): MqttClient {
-    const mqttClient: MqttClient = connect('mqtt://localhost:1883', mqttClientOptions);
+export function initMqttClient(url: string, mqttClientOptions: IClientOptions): MqttClient {
+    const mqttClient: MqttClient = connect(url, mqttClientOptions);
     return mqttClient;
 }
