@@ -22,7 +22,7 @@ export class EsbService {
                 qos: 1,
             };
 
-            this.mqttClient.subscribe('request/+/+', opts, (err: Error) => {
+            this.mqttClient.subscribe('request/#', opts, (err: Error) => {
                 if (!err) {
                     console.log('ESB request topics subscribed');
                     return;
