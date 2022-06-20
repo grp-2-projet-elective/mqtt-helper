@@ -1,8 +1,8 @@
 {
-  "name": "mqtt-helper",
+  "name": "@grp-2-projet-elective/mqtt-helper",
   "version": "0.1.3",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "lint": "eslint . --ext .ts",
     "test": "",
@@ -10,7 +10,7 @@
     "prebuild": "npm run patch-version",
     "build": "tsup src/index.ts --format cjs --clean",
     "prepublish": "npm run build",
-    "publish": "npm run publish"
+    "publish": "npm run publish --scope=@grp-2-projet-elective"
   },
   "repository": {
     "type": "git",
