@@ -9,7 +9,7 @@ export class EsbService {
     public readonly isMqttClientConnected: boolean = false;
     public readonly eventEmitter: EventEmitter = new EventEmitter();
 
-    constructor(private readonly mqttClient: MqttClient, public readonly topics: Array<string>) {
+    constructor(public readonly mqttClient: MqttClient, public readonly topics: Array<string>) {
         this.initEsbService();
     }
 
