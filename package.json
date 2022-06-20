@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "test": "",
-    "prebuild": "npm version patch -m 'Upgrade to %s for reasons'",
+    "patch-version": "npm version patch",
+    "prebuild": "npm run patch-version",
     "build": "tsup src/index.ts --format cjs --clean",
     "prepublish": "npm run build",
     "publish": "npm run publish"
