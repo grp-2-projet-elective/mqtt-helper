@@ -7,7 +7,7 @@ import { RequestEvent, ResponseEvent } from 'utils/relay-response-event.helper';
 
 export class EsbService {
     private _isMqttClientConnected: boolean = false;
-    public get isMqttClientConnected(): boolean{
+    public get isMqttClientConnected(): boolean {
         return this._isMqttClientConnected;
     }
     public readonly eventEmitter: EventEmitter = new EventEmitter();
@@ -42,10 +42,10 @@ export class EsbService {
 
                 console.error(err);
             });
-            
+
             this.mqttClient.subscribe('otherTopics/#', opts, (err: Error) => {
                 if (!err) {
-                    console.log('ESB request topics subscribed');
+                    console.log('ESB other topics subscribed');
                     return;
                 }
 
@@ -99,7 +99,7 @@ export class EsbService {
                             packet.properties.responseTopic,
                             JSON.stringify(responseData)
                         );
-                        // return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
+                        return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                     }
                 case 'otherTopics':
                     console.log('other topics');
@@ -125,7 +125,7 @@ export class EsbService {
                     correlationData: Buffer.from('secret', 'utf-8'),
                 },
             };
-    
+
             const responseMessage: ResponseMessage = JSON.parse(await publishWithResponseBasic(this.mqttClient, payload, publishOptions, requestTopic, responseTopic));
             console.log(`${apiName}/${action} : ${responseMessage.payload}`);
             return responseMessage;
