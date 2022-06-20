@@ -10,7 +10,7 @@
     "prebuild": "npm run patch-version",
     "build": "tsup src/index.ts --format cjs --clean",
     "prepublish": "npm run build",
-    "publish": "npm run publish --scope=@grp-2-projet-elective"
+    "publish": "npm publish --scope=@grp-2-projet-elective"
   },
   "repository": {
     "type": "git",
