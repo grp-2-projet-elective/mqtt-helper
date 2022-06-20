@@ -9,6 +9,7 @@
     "moduleResolution": "node",
     "outDir": "dist",
     "declaration": true,
+    "declarationMap": true,
     "importHelpers": true,
     "inlineSources": false,
     "noEmitHelpers": true,
