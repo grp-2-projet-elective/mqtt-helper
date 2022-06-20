@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import { IErrorCallback, ResponseMessage } from 'models/esb.model';
 import { IClientPublishOptions, IClientSubscribeOptions, MqttClient } from 'mqtt';
 import { publishWithResponse } from 'utils/mqtt-async.helper';
-import { ResponseEvent } from 'utils/relay-response-event.helper';
+import { RequestEvent, ResponseEvent } from 'utils/relay-response-event.helper';
 
 export class EsbService {
     public readonly isMqttClientConnected: boolean = false;
@@ -21,9 +21,8 @@ export class EsbService {
             const opts: IClientSubscribeOptions = {
                 qos: 1,
             };
-            this.mqttClient.subscribe("request/+/+", opts);
 
-            this.mqttClient.subscribe(['response/+/+'], (err: Error) => {
+            this.mqttClient.subscribe(['request/+/+', 'response/+/+'], opts, (err: Error) => {
                 if (!err) {
                     this.initEsbMessagesListening();
                     console.log('ESB topics subscribed');
@@ -62,8 +61,6 @@ export class EsbService {
                 case 'response':
                     return ResponseEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                 case 'request':
-                    console.log(packet);
-                    console.log(payload.toString());
                     if (
                         packet.properties &&
                         packet.properties.responseTopic &&
@@ -78,6 +75,7 @@ export class EsbService {
                             packet.properties.responseTopic,
                             JSON.stringify(responseData)
                         );
+                        return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                     }
                 case 'otherTopics':
                     console.log('other topics');

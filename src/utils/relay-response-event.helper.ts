@@ -11,3 +11,13 @@ export function ResponseEvent(
     const eventData: ResponseMessage = JSON.parse(payload.toString());
     return eventEmitter.emit(eventName, eventData);
 }
+export function RequestEvent(
+    eventEmitter: EventEmitter,
+    apiName: string,
+    action: string,
+    payload: Buffer
+) {
+    const eventName = `requestEvent/${apiName}/${action}`;
+    const eventData: ResponseMessage = JSON.parse(payload.toString());
+    return eventEmitter.emit(eventName, eventData);
+}
