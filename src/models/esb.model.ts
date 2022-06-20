@@ -4,7 +4,7 @@ export interface ResponseMessage {
 }
 
 export interface RequestMessage {
-    payload: string
+    payload: string;
 }
 
 export interface IErrorCallback {
