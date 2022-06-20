@@ -8,6 +8,8 @@
     ],
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "sourceMap": true,
+    "declaration": true,
     "strict": false,
     "strictNullChecks": true,
     "resolveJsonModule": true,
