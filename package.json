@@ -3,10 +3,10 @@
   "version": "0.1.13",
   "description": "",
   "main": "./dist/index.js",
-  "types": "dist/index.d.js",
+  "types": "./dist/index.d.js",
   "type": "module",
   "files": [
-    "dist"
+    "dist/"
   ],
   "scripts": {
     "lint": "eslint . --ext .ts",
