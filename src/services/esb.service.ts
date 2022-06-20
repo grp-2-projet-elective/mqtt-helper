@@ -6,7 +6,10 @@ import { publishWithResponse } from 'utils/mqtt-async.helper';
 import { RequestEvent, ResponseEvent } from 'utils/relay-response-event.helper';
 
 export class EsbService {
-    public readonly isMqttClientConnected: boolean = false;
+    private _isMqttClientConnected: boolean = false;
+    public get isMqttClientConnected(): boolean{
+        return this._isMqttClientConnected;
+    }
     public readonly eventEmitter: EventEmitter = new EventEmitter();
 
     constructor(public readonly mqttClient: MqttClient, public readonly topics: Array<string>) {
@@ -15,14 +18,14 @@ export class EsbService {
 
     private initEsbService(): void {
         this.mqttClient.on('connect', () => {
-            this.mqttClient.connected = true;
+            this._isMqttClientConnected = true;
             console.log(`Connected to mqtt ${new Date()}`);
 
             const opts: IClientSubscribeOptions = {
                 qos: 1,
             };
 
-            this.mqttClient.subscribe('request/#', opts, (err: Error) => {
+            this.mqttClient.subscribe('request/+/+', opts, (err: Error) => {
                 if (!err) {
                     console.log('ESB request topics subscribed');
                     return;
@@ -34,6 +37,15 @@ export class EsbService {
             this.mqttClient.subscribe(['response/+/+'], (err: Error) => {
                 if (!err) {
                     console.log('ESB response topics subscribed');
+                    return;
+                }
+
+                console.error(err);
+            });
+            
+            this.mqttClient.subscribe('otherTopics/#', opts, (err: Error) => {
+                if (!err) {
+                    console.log('ESB request topics subscribed');
                     return;
                 }
 
@@ -52,6 +64,7 @@ export class EsbService {
         });
 
         this.mqttClient.on('close', () => {
+            this._isMqttClientConnected = false;
             console.log('Connection closed by client');
         });
 
@@ -60,6 +73,7 @@ export class EsbService {
         });
 
         this.mqttClient.on('offline', () => {
+            this._isMqttClientConnected = false;
             console.log('Client is currently offline');
         });
     }
