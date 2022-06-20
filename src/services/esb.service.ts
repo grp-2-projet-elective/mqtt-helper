@@ -127,7 +127,7 @@ export class EsbService {
             };
 
             const responseMessage: ResponseMessage = JSON.parse(await publishWithResponseBasic(this.mqttClient, payload, publishOptions, requestTopic, responseTopic));
-            console.log(`${apiName}/${action} : ${responseMessage.toString()}`);
+            console.log(`${apiName}/${action} : ${JSON.stringify(responseMessage)}`);
             return responseMessage;
         } catch (error) {
             throw new Error(`${apiName}/${action} : ${error}`);
