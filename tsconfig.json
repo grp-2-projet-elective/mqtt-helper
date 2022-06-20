@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es2017",
+    "target": "es2020",
     "module": "CommonJS",
     "lib": [
       "esnext"
     ],
     "moduleResolution": "node",
-    "outDir": "dist/",
+    "outDir": "dist",
     "declaration": true,
     "importHelpers": true,
     "inlineSources": false,
@@ -20,6 +20,7 @@
     "strict": false,
     "strictNullChecks": true,
     "resolveJsonModule": true,
+    "skipLibCheck": false,
     "skipDefaultLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -33,6 +34,13 @@
       ]
     }
   },
+  "include": [
+    "./src/**/*",
+    "./src/**/*.json"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "ts-node": {
     "require": [
       "tsconfig-paths/register"
