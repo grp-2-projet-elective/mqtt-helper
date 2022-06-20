@@ -1,4 +1,6 @@
-import { mqttClientOptions } from "models/esb.model";
-import { connect, MqttClient } from "mqtt";
+import { connect, IClientOptions, MqttClient } from "mqtt";
 
-export const mqttClient: MqttClient = connect('mqtt://localhost:1883', mqttClientOptions);
+export function initMqttClient(mqttClientOptions: IClientOptions): MqttClient {
+    const mqttClient: MqttClient = connect('mqtt://localhost:1883', mqttClientOptions);
+    return mqttClient;
+}
