@@ -1,16 +1,22 @@
 {
   "name": "mqtt-helper",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "lint": "eslint . --ext .ts",
     "test": "",
-    "build": "tsup src/index.ts --format cjs --clean"
+    "prebuild": "npm version patch -m 'Upgrade to %s for reasons'",
+    "build": "tsup src/index.ts --format cjs --clean",
+    "prepublish": "npm run build",
+    "publish": "npm run publish"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/grp-2-projet-elective/mqtt-helper.git"
+  },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
   },
   "author": "",
   "license": "MIT",
