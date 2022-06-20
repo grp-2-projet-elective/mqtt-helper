@@ -1,0 +1,34 @@
+{
+  "name": "mqtt-helper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "test": "",
+    "build": "tsup src/index.ts --format cjs --clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grp-2-projet-elective/mqtt-helper.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/grp-2-projet-elective/mqtt-helper/issues"
+  },
+  "homepage": "https://github.com/grp-2-projet-elective/mqtt-helper#readme",
+  "dependencies": {
+    "mqtt": "^4.3.7"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "eslint": "^8.18.0",
+    "ts-node": "^10.8.1",
+    "tsconfig-paths": "^4.0.0",
+    "tsup": "^6.1.2",
+    "typescript": "^4.7.4"
+  }
+}
