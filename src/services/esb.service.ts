@@ -2,7 +2,7 @@
 import EventEmitter from 'events';
 import { IErrorCallback, ResponseMessage } from 'models/esb.model';
 import { IClientPublishOptions, IClientSubscribeOptions, MqttClient } from 'mqtt';
-import { publishWithResponse } from 'utils/mqtt-async.helper';
+import { publishWithResponse, publishWithResponseBasic } from 'utils/mqtt-async.helper';
 import { RequestEvent, ResponseEvent } from 'utils/relay-response-event.helper';
 
 export class EsbService {
@@ -118,7 +118,6 @@ export class EsbService {
         try {
             const responseTopic = `response/${apiName}/${action}`;
             const requestTopic = `request/${apiName}/${action}`;
-            const responseEventName = `responseEvent/${apiName}/${action}`;
             const publishOptions: IClientPublishOptions = {
                 qos: 1,
                 properties: {
@@ -126,7 +125,8 @@ export class EsbService {
                     correlationData: Buffer.from('secret', 'utf-8'),
                 },
             };
-            const responseMessage = await publishWithResponse(this.mqttClient, payload, publishOptions, requestTopic, responseEventName, this.eventEmitter);
+    
+            const responseMessage: ResponseMessage = JSON.parse(await publishWithResponseBasic(this.mqttClient, payload, publishOptions, requestTopic, responseTopic));
             console.log(`${apiName}/${action} : ${responseMessage.payload}`);
             return responseMessage;
         } catch (error) {
