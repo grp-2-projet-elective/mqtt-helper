@@ -83,6 +83,7 @@ export class EsbService {
             const topicArr = topic.split('/'); //spliting the topic ==> [response,apiName,action]
             switch (topicArr[0]) {
                 case 'response':
+                    console.log(packet)
                     return ResponseEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                 case 'request':
                     if (
@@ -91,6 +92,7 @@ export class EsbService {
                         packet.properties.correlationData &&
                         packet.properties.correlationData.toString() === "secret"
                     ) {
+                        console.log(packet)
                         const responseData = {
                             error: false,
                             message: payload.toString(),
@@ -126,7 +128,7 @@ export class EsbService {
                 },
             };
 
-            const responseMessage: ResponseMessage = JSON.parse(await publishWithResponseBasic(this.mqttClient, payload, publishOptions, requestTopic, responseTopic));
+            const responseMessage = JSON.parse(await publishWithResponse(this.mqttClient, payload, publishOptions, responseTopic, requestTopic, this.eventEmitter).toString());
             console.log(`${apiName}/${action} : ${JSON.stringify(responseMessage)}`);
             return responseMessage;
         } catch (error) {
