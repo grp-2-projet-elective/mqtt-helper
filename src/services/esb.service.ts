@@ -108,6 +108,9 @@ export class EsbService {
                     }
                 case 'otherTopics':
                     console.log('other topics');
+                    console.log(topic.toString())
+                    console.log(payload.toString())
+                    console.log(packet)
                     return;
                 default:
                     return console.log('can not find anything');
@@ -131,7 +134,7 @@ export class EsbService {
                 },
             };
 
-            const responseMessage = JSON.parse(await publishWithResponse(this.mqttClient, payload, publishOptions, responseTopic, requestTopic, this.eventEmitter).toString());
+            const responseMessage = JSON.parse(await publishWithResponseBasic(this.mqttClient, payload, publishOptions, requestTopic, responseTopic).toString());
             console.log(`${apiName}/${action} : ${JSON.stringify(responseMessage)}`);
             return responseMessage;
         } catch (error) {
