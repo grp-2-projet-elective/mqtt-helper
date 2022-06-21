@@ -98,9 +98,9 @@ export class EsbService {
                     packet.properties.responseTopic,
                     JSON.stringify(responseData)
                 );
-                return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
+                RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
             }
-            
+
             switch (topicArr[0]) {
                 case 'response':
                     console.log(topic.toString())
