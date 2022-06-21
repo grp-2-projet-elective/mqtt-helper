@@ -85,7 +85,7 @@ export class EsbService {
                 case 'response':
                     console.log(topic.toString())
                     console.log(payload.toString())
-                    console.log(packet)
+                    console.log(packet.payload.toString())
                     return ResponseEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                 case 'request':
                     if (
@@ -95,7 +95,6 @@ export class EsbService {
                         packet.properties.correlationData.toString() === "secret"
                     ) {
                         console.log(packet)
-                        console.log(packet.properties.correlationData.toString())
                         const responseData = {
                             error: false,
                             message: payload.toString(),
