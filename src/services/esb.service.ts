@@ -130,7 +130,7 @@ export class EsbService {
             ) {
                 const responseData = {
                     error: false,
-                    message: `${relayState === 1 ? "relay opened" : "relay closed"}`,
+                    message: payload.toString(),
                 };
                 this.mqttClient.publish(
                     packet.properties.responseTopic,
