@@ -34,7 +34,7 @@ export class EsbService {
                 console.error(err);
             });
 
-            this.mqttClient.subscribe(['response/+/+'], (err: Error) => {
+            this.mqttClient.subscribe('response/+/+', (err: Error) => {
                 if (!err) {
                     console.log('ESB response topics subscribed');
                     return;
@@ -82,25 +82,6 @@ export class EsbService {
         this.mqttClient.on('message', (topic, payload, packet) => {
             const topicArr = topic.split('/'); //spliting the topic ==> [response,apiName,action]
 
-            const { relayState } = JSON.parse(payload.toString());
-            console.log(payload.toString());
-            if (
-                packet.properties &&
-                packet.properties.responseTopic &&
-                packet.properties.correlationData &&
-                packet.properties.correlationData.toString() === "secret"
-            ) {
-                const responseData = {
-                    error: false,
-                    message: `${relayState === 1 ? "relay opened" : "relay closed"}`,
-                };
-                this.mqttClient.publish(
-                    packet.properties.responseTopic,
-                    JSON.stringify(responseData)
-                );
-                RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
-            }
-
             switch (topicArr[0]) {
                 case 'response':
                     console.log(topic.toString())
@@ -133,6 +114,29 @@ export class EsbService {
                     return;
                 default:
                     return console.log('can not find anything');
+            }
+        });
+
+        this.mqttClient.on('message', (topic, payload, packet) => {
+            const topicArr = topic.split('/'); //spliting the topic ==> [response,apiName,action]
+
+            const { relayState } = JSON.parse(payload.toString());
+            console.log(payload.toString());
+            if (
+                packet.properties &&
+                packet.properties.responseTopic &&
+                packet.properties.correlationData &&
+                packet.properties.correlationData.toString() === "secret"
+            ) {
+                const responseData = {
+                    error: false,
+                    message: `${relayState === 1 ? "relay opened" : "relay closed"}`,
+                };
+                this.mqttClient.publish(
+                    packet.properties.responseTopic,
+                    JSON.stringify(responseData)
+                );
+                return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
             }
         });
     }
