@@ -93,6 +93,7 @@ export class EsbService {
                         packet.properties.correlationData.toString() === "secret"
                     ) {
                         console.log(packet)
+                        console.log(packet.properties.correlationData.toString())
                         const responseData = {
                             error: false,
                             message: payload.toString(),
