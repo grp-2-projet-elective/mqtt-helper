@@ -83,6 +83,8 @@ export class EsbService {
             const topicArr = topic.split('/'); //spliting the topic ==> [response,apiName,action]
             switch (topicArr[0]) {
                 case 'response':
+                    console.log(topic.toString())
+                    console.log(payload.toString())
                     console.log(packet)
                     return ResponseEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                 case 'request':
