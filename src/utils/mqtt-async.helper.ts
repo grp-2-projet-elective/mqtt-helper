@@ -1,39 +1,6 @@
 import EventEmitter from "events";
-import { RequestMessage, ResponseMessage } from "models/esb.model";
+import { ResponseMessage } from "models/esb.model";
 import { IClientPublishOptions, MqttClient } from "mqtt";
-
-// function publishWithResponseBasic(
-//     client: MqttClient,
-//     message: string,
-//     publishOptions: IClientPublishOptions,
-//     requestTopic: string,
-//     responseTopic: string
-// ): Promise<string> {
-//     return new Promise((resolve, reject) => {
-//         const requestMessage: RequestMessage = {
-//             payload: message,
-//         };
-//         client.subscribe(responseTopic);
-//         client.once("message", (topic, payload) => {
-//             client.unsubscribe(responseTopic);
-//             try {
-//                 const responseMessage: ResponseMessage = JSON.parse(
-//                     payload.toString()
-//                 );
-//                 responseMessage.error
-//                     ? reject(responseMessage.payload)
-//                     : resolve(responseMessage.payload);
-//             } catch (error) {
-//                 resolve("JsonConvertError");
-//             }
-//         });
-//         client.publish(
-//             requestTopic,
-//             JSON.stringify(requestMessage),
-//             publishOptions
-//         );
-//     });
-// }
 
 async function publishWithResponse(
     client: MqttClient,
@@ -68,3 +35,4 @@ async function publishWithResponse(
 }
 // publishWithResponseBasic, 
 export { publishWithResponse };
+

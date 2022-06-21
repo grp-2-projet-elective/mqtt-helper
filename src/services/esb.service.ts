@@ -86,57 +86,30 @@ export class EsbService {
                 case 'response':
                     console.log(topic.toString())
                     console.log(payload.toString())
-                    console.log(packet.payload.toString())
                     return ResponseEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
-                // case 'request':
-                //     if (
-                //         packet.properties &&
-                //         packet.properties.responseTopic &&
-                //         packet.properties.correlationData &&
-                //         packet.properties.correlationData.toString() === "secret"
-                //     ) {
-                //         console.log(packet)
-                //         const responseData = {
-                //             error: false,
-                //             message: payload.toString(),
-                //         };
-                //         this.mqttClient.publish(
-                //             packet.properties.responseTopic,
-                //             JSON.stringify(responseData)
-                //         );
-                //         return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
-                //     }
+                case 'request':
+                    if (
+                        packet.properties &&
+                        packet.properties.responseTopic &&
+                        packet.properties.correlationData &&
+                        packet.properties.correlationData.toString() === "secret"
+                    ) {
+                        console.log(packet)
+                        const responseData = {
+                            error: false,
+                            message: payload.toString(),
+                        };
+                        this.mqttClient.publish(
+                            packet.properties.responseTopic,
+                            JSON.stringify(responseData)
+                        );
+                        return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
+                    }
                 case 'otherTopics':
                     console.log('other topics');
-                    console.log(topic.toString())
-                    console.log(payload.toString())
-                    console.log(packet)
                     return;
                 default:
                     return console.log('can not find anything');
-            }
-        });
-
-        this.mqttClient.on('message', (topic, payload, packet) => {
-            const topicArr = topic.split('/'); //spliting the topic ==> [response,apiName,action]
-
-            const { relayState } = JSON.parse(payload.toString());
-            console.log(payload.toString());
-            if (
-                packet.properties &&
-                packet.properties.responseTopic &&
-                packet.properties.correlationData &&
-                packet.properties.correlationData.toString() === "secret"
-            ) {
-                const responseData = {
-                    error: false,
-                    message: payload.toString(),
-                };
-                this.mqttClient.publish(
-                    packet.properties.responseTopic,
-                    JSON.stringify(responseData)
-                );
-                return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
             }
         });
     }
@@ -147,7 +120,7 @@ export class EsbService {
         payload: string,
     ): Promise<ResponseMessage> {
         try {
-            const responseTopic = `response/${apiName}/${action}`;
+            const responseTopic = `response/${apiName}/${JSON.parse(payload).requestId}`;
             const requestTopic = `request/${apiName}/${action}`;
             const publishOptions: IClientPublishOptions = {
                 qos: 1,
@@ -158,7 +131,7 @@ export class EsbService {
             };
 
             const responseMessage = await publishWithResponse(this.mqttClient, payload, publishOptions, requestTopic, responseTopic, this.eventEmitter);
-            console.log(`${apiName}/${action} : ${JSON.stringify(responseMessage)}`);
+            console.log(`${apiName}/${action} : ${JSON.stringify(responseMessage.toString())}`);
             return responseMessage;
         } catch (error) {
             throw new Error(`${apiName}/${action} : ${error}`);
