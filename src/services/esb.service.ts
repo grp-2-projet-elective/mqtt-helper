@@ -84,24 +84,30 @@ export class EsbService {
 
             switch (topicArr[0]) {
                 case 'response':
-                    console.log(topic.toString())
-                    console.log(payload.toString())
+                    // console.log(topic.toString())
+                    // console.log(payload.toString())
                     return ResponseEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                 case 'request':
-                    if (
-                        packet.properties &&
-                        packet.properties.responseTopic
-                    ) {
-                        const requestData = {
-                            error: false,
-                            message: payload.toString(),
-                        };
-                        this.mqttClient.publish(
-                            packet.properties.responseTopic,
-                            JSON.stringify(requestData)
-                        );
-                        return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
-                    }
+                    // if (
+                    //     packet.properties &&
+                    //     packet.properties.responseTopic
+                    // ) {
+                    //     const requestData = {
+                    //         error: false,
+                    //         message: payload.toString(),
+                    //     };
+                    //     this.mqttClient.publish(
+                    //         packet.properties.responseTopic,
+                    //         JSON.stringify(requestData)
+                    //     );
+
+                    // }
+
+                    this.mqttClient.publish(
+                        topic,
+                        payload
+                    );
+                    return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                 case 'otherTopics':
                     console.log('other topics');
                     return;
