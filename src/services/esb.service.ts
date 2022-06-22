@@ -86,6 +86,8 @@ export class EsbService {
                 case 'response':
                     // console.log(topic.toString())
                     // console.log(payload.toString())
+                    console.log(topic)
+                    console.log(payload)
                     return ResponseEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                 case 'request':
                     // if (
