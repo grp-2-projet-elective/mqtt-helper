@@ -4,6 +4,7 @@ export interface ResponseMessage {
 }
 
 export interface RequestMessage {
+    requestId: string;
     payload: string;
 }
 

@@ -1,8 +1,8 @@
 
 import EventEmitter from 'events';
-import { IErrorCallback, ResponseMessage } from 'models/esb.model';
+import { IErrorCallback, RequestMessage, ResponseMessage } from 'models/esb.model';
 import { IClientPublishOptions, IClientSubscribeOptions, MqttClient } from 'mqtt';
-import { publishWithResponse } from 'utils/mqtt-async.helper';
+import { publishWithResponse, publishWithResponseAsync } from 'utils/mqtt-async.helper';
 import { RequestEvent, ResponseEvent } from 'utils/relay-response-event.helper';
 
 export class EsbService {
@@ -130,6 +130,23 @@ export class EsbService {
             };
 
             const responseMessage = await publishWithResponse(this.mqttClient, payload, publishOptions, requestTopic, responseTopic, this.eventEmitter);
+            console.log(`${apiName}/${action} : ${JSON.stringify(responseMessage.toString())}`);
+            return responseMessage;
+        } catch (error) {
+            throw new Error(`${apiName}/${action} : ${error}`);
+        }
+    };
+
+    public async callAsync(
+        apiName: string,
+        action: string,
+        message: RequestMessage,
+    ): Promise<ResponseMessage> {
+        try {
+            const responseTopic = `response/${apiName}/${message.requestId}`;
+            const requestTopic = `request/${apiName}/${action}`;
+
+            const responseMessage = await publishWithResponseAsync(this.mqttClient, message, requestTopic, responseTopic);
             console.log(`${apiName}/${action} : ${JSON.stringify(responseMessage.toString())}`);
             return responseMessage;
         } catch (error) {

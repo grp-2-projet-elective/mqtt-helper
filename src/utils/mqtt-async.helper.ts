@@ -1,5 +1,5 @@
 import EventEmitter from "events";
-import { ResponseMessage } from "models/esb.model";
+import { RequestMessage, ResponseMessage } from "models/esb.model";
 import { IClientPublishOptions, MqttClient } from "mqtt";
 
 async function publishWithResponse(
@@ -33,6 +33,36 @@ async function publishWithResponse(
         client.publish(requestTopic, JSON.stringify(payload), publishOptions);
     });
 }
+
+async function publishWithResponseAsync(
+    mqttClient: MqttClient,
+    message: RequestMessage,
+    requestTopic: string,
+    responseTopic: string
+): Promise<ResponseMessage> {
+    return new Promise((resolve, reject) => {
+        const checkTimeOut = setTimeout(() => {
+            const responseMessage: ResponseMessage = {
+                error: true,
+                payload: "timeOut",
+            };
+
+            mqttClient.publish(responseTopic, JSON.stringify(responseMessage));
+        }, 5000);
+        mqttClient.once(
+            responseTopic,
+            (responseMessage: ResponseMessage) => {
+                clearTimeout(checkTimeOut);
+                responseMessage.error
+                    ? reject(responseMessage.payload)
+                    : resolve(responseMessage);
+            }
+        );
+
+        mqttClient.publish(requestTopic, JSON.stringify(message));
+    });
+}
+
 // publishWithResponseBasic, 
-export { publishWithResponse };
+export { publishWithResponseAsync, publishWithResponse };
 
