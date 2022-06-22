@@ -103,10 +103,13 @@ export class EsbService {
 
                     // }
 
-                    this.mqttClient.publish(
-                        topic,
-                        payload
-                    );
+                    console.log(topic)
+                    console.log(payload)
+
+                    // this.mqttClient.publish(
+                    //     topic,
+                    //     payload
+                    // );
                     return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                 case 'otherTopics':
                     console.log('other topics');
