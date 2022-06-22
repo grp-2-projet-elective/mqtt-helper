@@ -90,17 +90,15 @@ export class EsbService {
                 case 'request':
                     if (
                         packet.properties &&
-                        packet.properties.responseTopic &&
-                        packet.properties.correlationData &&
-                        packet.properties.correlationData.toString() === "secret"
+                        packet.properties.responseTopic
                     ) {
-                        const responseData = {
+                        const requestData = {
                             error: false,
                             message: payload.toString(),
                         };
                         this.mqttClient.publish(
                             packet.properties.responseTopic,
-                            JSON.stringify(responseData)
+                            JSON.stringify(requestData)
                         );
                         return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
                     }
