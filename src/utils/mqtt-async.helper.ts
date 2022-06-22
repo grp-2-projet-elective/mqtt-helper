@@ -49,13 +49,13 @@ async function publishWithResponseAsync(
 
             mqttClient.publish(responseTopic, JSON.stringify(responseMessage));
         }, 5000);
-        console.log(responseTopic);
 
+        console.log(responseTopic);
         mqttClient.once(
             responseTopic,
             (responseMessage: ResponseMessage) => {
                 clearTimeout(checkTimeOut);
-                console.log(responseMessage);
+                console.log(JSON.parse(responseMessage.toString()));
                 responseMessage.error
                     ? reject(responseMessage.payload)
                     : resolve(responseMessage);

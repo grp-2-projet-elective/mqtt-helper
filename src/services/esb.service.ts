@@ -87,8 +87,8 @@ export class EsbService {
                     // console.log(topic.toString())
                     // console.log(payload.toString())
                     console.log(topic)
-                    console.log(payload)
-                    return ResponseEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
+                    console.log(JSON.parse(payload.toString()))
+                    return ResponseEvent(this.eventEmitter, topicArr[1], JSON.parse(payload.toString()).requestId, payload);
                 case 'request':
                     // if (
                     //     packet.properties &&
@@ -106,7 +106,7 @@ export class EsbService {
                     // }
 
                     console.log(topic)
-                    console.log(payload)
+                    console.log(JSON.parse(payload.toString()))
 
                     // this.mqttClient.publish(
                     //     topic,
