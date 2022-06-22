@@ -12,7 +12,7 @@ export class EsbService {
     }
     public readonly eventEmitter: EventEmitter = new EventEmitter();
 
-    constructor(public readonly mqttClient: MqttClient, public readonly topics: Array<string>) {
+    constructor(public readonly mqttClient: MqttClient, public apiName: string, public readonly unlistenedTopics: Array<string>) {
         this.initEsbService();
     }
 
@@ -84,35 +84,18 @@ export class EsbService {
 
             switch (topicArr[0]) {
                 case 'response':
-                    // console.log(topic.toString())
-                    // console.log(payload.toString())
-                    console.log(topic)
-                    console.log(JSON.parse(payload.toString()))
-                    return ResponseEvent(this.eventEmitter, topicArr[1], JSON.parse(payload.toString()).requestId, payload);
+                    if (!this.unlistenedTopics.includes(topicArr[1])) {
+                        console.log(topic)
+                        console.log(JSON.parse(payload.toString()))
+                        return ResponseEvent(this.eventEmitter, topicArr[1], JSON.parse(payload.toString()).requestId, payload);
+                    }
                 case 'request':
-                    // if (
-                    //     packet.properties &&
-                    //     packet.properties.responseTopic
-                    // ) {
-                    //     const requestData = {
-                    //         error: false,
-                    //         message: payload.toString(),
-                    //     };
-                    //     this.mqttClient.publish(
-                    //         packet.properties.responseTopic,
-                    //         JSON.stringify(requestData)
-                    //     );
+                    if (topicArr[1] === this.apiName) {
+                        console.log(topic)
+                        console.log(JSON.parse(payload.toString()))
 
-                    // }
-
-                    console.log(topic)
-                    console.log(JSON.parse(payload.toString()))
-
-                    // this.mqttClient.publish(
-                    //     topic,
-                    //     payload
-                    // );
-                    return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
+                        return RequestEvent(this.eventEmitter, topicArr[1], topicArr[2], payload);
+                    }
                 case 'otherTopics':
                     console.log('other topics');
                     return;
